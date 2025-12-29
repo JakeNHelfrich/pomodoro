@@ -21,7 +21,7 @@ interface DurationInputProps {
 }
 
 export function DurationInput({ onSubmit }: DurationInputProps): React.ReactElement {
-  const [value, setValue] = useState('25');
+  const [value, setValue] = useState('0');
   const [unit, setUnit] = useState<TimeUnit>('minutes');
 
   useInput((input, key) => {
