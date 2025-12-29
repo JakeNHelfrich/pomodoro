@@ -5,7 +5,7 @@ import type { TimerStatus } from '../types/index.js';
 interface UseTimerReturn {
   remainingSeconds: number;
   status: TimerStatus;
-  start: (durationMinutes: number) => void;
+  start: (durationSeconds: number) => void;
   pause: () => void;
   resume: () => void;
   reset: () => void;
@@ -29,8 +29,8 @@ export function useTimer(onComplete: () => void): UseTimerReturn {
     status === 'running' ? 1000 : null
   );
 
-  const start = useCallback((durationMinutes: number) => {
-    setRemainingSeconds(durationMinutes * 60);
+  const start = useCallback((durationSeconds: number) => {
+    setRemainingSeconds(durationSeconds);
     setStatus('running');
   }, []);
 

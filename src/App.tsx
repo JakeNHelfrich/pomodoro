@@ -29,17 +29,17 @@ export function App({ initialDuration }: AppProps): React.ReactElement {
   }, [status, reset]);
 
   const handleDurationSubmit = useCallback(
-    (minutes: number) => {
-      start(minutes);
+    (seconds: number) => {
+      start(seconds);
       setScreen('timer');
     },
     [start]
   );
 
-  // Start timer immediately if initial duration provided
+  // Start timer immediately if initial duration provided (CLI arg is in minutes)
   React.useEffect(() => {
     if (initialDuration && screen === 'timer' && status === 'idle') {
-      start(initialDuration);
+      start(initialDuration * 60);
     }
   }, [initialDuration, screen, status, start]);
 
