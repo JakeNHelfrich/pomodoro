@@ -1,5 +1,5 @@
-import React, { useState, useCallback } from 'react';
-import { Box, useApp, useInput, useStdout } from 'ink';
+import React, { useState, useCallback, useEffect } from 'react';
+import { Box, useInput, useStdout } from 'ink';
 import { TimerDisplay } from './components/TimerDisplay.js';
 import { StatusBar } from './components/StatusBar.js';
 import { DurationInput } from './components/DurationInput.js';
@@ -13,16 +13,20 @@ interface AppProps {
 }
 
 export function App({ initialDuration }: AppProps): React.ReactElement {
-  const { exit } = useApp();
   const { stdout } = useStdout();
   const [screen, setScreen] = useState<AppScreen>(initialDuration ? 'timer' : 'input');
 
-  const handleComplete = useCallback(() => {
+  const { remainingSeconds, status, start, pause, resume, reset } = useTimer(() => {
     notifyTimerComplete();
-    exit();
-  }, [exit]);
+  });
 
-  const { remainingSeconds, status, start, pause, resume, reset } = useTimer(handleComplete);
+  // Return to home screen when timer completes
+  useEffect(() => {
+    if (status === 'complete') {
+      reset();
+      setScreen('input');
+    }
+  }, [status, reset]);
 
   const handleDurationSubmit = useCallback(
     (minutes: number) => {
